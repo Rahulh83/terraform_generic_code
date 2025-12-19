@@ -39,7 +39,7 @@ stages:
 
                 
   - stage: Build   
-    displayName: Build
+    displayName: Build (init plan & apply)
     dependsOn: PreBuildScanning
     jobs:
       - job: TerraformInit
@@ -59,20 +59,12 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'validate'
-      - job: TerraformPlan
-        pool: TestAgent
-        displayName: Terraform Plan
-        steps:
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
               environmentServiceNameAzureRM: 'new_service_con'
-      - job: TerraformApply
-        pool: TestAgent
-        displayName: Terraform Apply
-        steps:
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'

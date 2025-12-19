@@ -8,7 +8,7 @@ variables:
 
 parameters:
   - name: environment
-    values:
+    values: 
       - dev
       - qa
       - prod

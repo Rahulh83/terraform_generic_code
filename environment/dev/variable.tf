@@ -82,3 +82,32 @@ variable "vms" {
     })
   }))
 }
+
+variable "sql_servers" {
+  type = map(object({
+    name                         = string
+    resource_group_name          = string
+    location                     = string
+    version                      = string
+    administrator_login          = string
+    administrator_login_password = string
+    minimum_tls_version          = string
+    azuread_administrator = map(object({
+      login_username = string
+      object_id      = string
+    }))
+  }))
+}
+
+variable "dbs" {
+    type = map(object({
+  name         = string
+  server_id    = string
+  collation    = string
+  license_type = string
+  max_size_gb  = number
+  sku_name     = string
+  enclave_type = string
+  create_mode = optional(string)
+    }))
+}

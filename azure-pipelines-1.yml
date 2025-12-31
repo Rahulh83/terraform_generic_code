@@ -1,0 +1,57 @@
+trigger: none
+
+pool: TestAgent
+
+stages:
+  - stage:
+    displayName: Build
+    jobs:
+    - job: Build
+      steps:
+        - task: Npm@1
+          inputs:
+            command: 'install'
+            workingDir: '$(Build.SourcesDirectory)/src'
+        - task: Npm@1
+          inputs:
+            command: 'custom'
+            workingDir: '$(Build.SourcesDirectory)/src'
+            customCommand: 'npm run build'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
+  - stage: scanning
+    displayName: SAST Scanning
+    jobs:
+      - job: scanning
+        displayName: Sonar Scan
+        steps:
+        - task: SonarQubePrepare@8
+          inputs:
+            SonarQube: 'sonar-svc'
+            scannerMode: 'dotnet'
+            dotnetScannerVersion: '16.x'
+            projectKey: 'Terraform-generic-module_Terraform-generic-module_4ba06c3c-993c-411b-acf2-fb1e4000ba71'
+            projectName: 'Terraform-generic-module'
+        - task: SonarQubePrepare@8
+          inputs:
+            SonarQube: 'sonar-svc'
+            scannerMode: 'cli'
+            configMode: 'manual'
+            cliProjectKey: 'Terraform-generic-module_Terraform-generic-module_4ba06c3c-993c-411b-acf2-fb1e4000ba71'
+            cliProjectName: 'Terraform-generic-module'
+            cliSources: '.'
+        - task: SonarQubeAnalyze@8
+          inputs:
+            jdkversion: 'JAVA_HOME_17_X64'
+        - task: SonarQubePublish@8
+          inputs:
+            pollingTimeoutSec: '300'
+            
+        
+         
+             
+
+

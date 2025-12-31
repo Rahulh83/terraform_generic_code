@@ -166,3 +166,59 @@ vms = {
     }
   }
 }
+
+
+# sql_servers =  {
+
+#     name                         = "dev-mssql-server1"
+#     resource_group_name          = "rg-dev-1"
+#     location                     = string
+#     version                      = "12.0"
+#     administrator_login          = "sqladminuser"
+#     administrator_login_password = "P@ssw0rd12345"
+#     azuread_administrator = map(object({
+#       login_username = string
+#       object_id      = string
+#     }))
+#   }
+
+
+# dbs = {
+
+#   name         = "dev-mssql-db1"
+#   max_size_gb  = 2
+#   sku_name     = "Basic"
+#   enclave_type = string
+#   create_mode = optional(string)
+#     }
+
+sql_servers = {
+  sqlserver1 = {
+    name                         = "sql-dev-server-01"
+    resource_group_name          = "rg-dev-db"
+    location                     = "eastus"
+    version                      = "12.0"
+    administrator_login          = "sqladminuser"
+    administrator_login_password = "StrongPassword@123"
+    minimum_tls_version          = "1.2"
+
+    azuread_administrator = {
+      aad_admin_1 = {
+        login_username = "sql-aad-admin"
+        object_id      = "11111111-2222-3333-4444-555555555555"
+      }
+    }
+  }}
+
+  dbs = {
+  db1 = {
+    name         = "appdb-dev"
+    server_id    = "/subscriptions/xxxx/resourceGroups/rg-dev-db/providers/Microsoft.Sql/servers/sql-dev-server-01"
+    collation    = "SQL_Latin1_General_CP1_CI_AS"
+    license_type = "LicenseIncluded"
+    max_size_gb  = 10
+    sku_name     = "Basic"
+    enclave_type = "Default"
+    create_mode  = "Default"
+  }
+  }

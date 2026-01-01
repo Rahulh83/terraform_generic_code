@@ -12,15 +12,15 @@ stages:
           inputs:
             command: 'install'
             versionSpec: '16.x'
-            workingDir: '$(Build.SourcesDirectory)/ReactTodoUIMonolith-main\src'
+            workingDir: '$(Build.SourcesDirectory)'
         - task: Npm@1
           inputs:
             command: 'custom'
-            workingDir: '$(Build.SourcesDirectory)/ReactTodoUIMonolith-main\src'
+            workingDir: '$(Build.SourcesDirectory)'
             customCommand: 'npm run build'
         - task: PublishBuildArtifacts@1
           inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)/ReactTodoUIMonolith-main\src'
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
             publishLocation: 'Container'
   - stage: scanning
